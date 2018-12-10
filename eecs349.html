@@ -1,0 +1,169 @@
+<html>
+<head>
+	<title>Trust No One! Using Machine Learning to Measure Distrust in Partisan WhatsApp Groups</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+</head>
+<body>
+	<div class="bs-component">
+              <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">EECS 349</a>
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="https://vbursztyn.github.io/eecs349.html">Home<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="mailto:victorbursztyn2022@u.northwestern.edu">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="btn btn-primary" bg href="Victor_S_Bursztyn_final.pdf">Download Full Report</a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+    <div class="jumbotron">
+        <h1 class="display-4">Trust No One! </br>Using Machine Learning to Measure Distrust in Partisan WhatsApp Groups</h2>
+        <p class="lead">by Victor S. Bursztyn (PhD Student).</br></br>Final Project for Machine Learning (EECS 349 - Fall 2018). Professor Doug Downey. Northwestern University. </p>
+        <hr class="my-4">
+        <p>Scroll down to read a brief abstract and a summary of the results. Please download the <strong>full</strong> report in PDF.</p>
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" href="#" role="button">Download Full Report</a>
+        </p>
+    </div>
+    <div class="bs-component" width="90%" style="margin-left: 3%; margin-right: 3%; margin-bottom: 1.5em;">
+    	<h2 style="margin-bottom: .7em;">Project in a Nutshell</h2>
+        <p>
+        	On October 28th, amid widespread fake news and conspiracy theories that flooded social media, Brazilians elected far-right candidate Jair Bolsonaro their next president. With over 120M users in Brazil — the second largest market in the world —, the role that WhatsApp played in this electoral process has emerged as a major focus of attention and controversy because of its alleged effectivity in a large set of sucessful campaigns. Not only Bolsonaro has been loud about his use of the platform, but over 50 conservative congressmen who followed his steps got elected for the first time. However, due to WhatsApp's private nature and lack of transparency, it’s hard to assess how exactly the platform has been used. One of the many phenomena that is believed to happen in this space, similarly to other settings worldwide, is the appropriation of the expression “fake news” by partisan groups to promote distrust toward several institutions. After collecting ~3M messages from hundreds of semi-public right-wing and left-wing WhatsApp groups during the Brazilian election, my prediction task is defined as follows: to predict when users from clearly partisan groups are calling something false (e.g., “a lie”, “a fraud” or “fake news”) as a function of all other terms recently used in the conversation. As illustrated in Figures 1 and 2, these neighboring terms can target a wide range of topics, from mainstream media outlets and traditional polling organizations to WhatsApp itself. In particular, I'm interested in unveiling the terms that trigger this behavior and measuring how they vary across the political spectrum.
+        </p>
+    </div>
+    <div width="100%" style="display:inline-block">
+	    <div class="card border-light mb-3" style="max-width: 40%; float:left; margin-left: 3%; margin-right: 3%;">
+	        <div class="card-header">Figure 1</div>
+	        <div class="card-body">
+	        	<h4 class="card-title">Translated examples of users calling something false in left-wing groups.</h4>
+	            <img src="left_wingers.png" width="100%"/>
+	        </div>
+	    </div>
+	    <div class="card border-light mb-3" style="max-width: 40%; float:left;">
+	        <div class="card-header">Figure 2</div>
+	        <div class="card-body">
+	        	<h4 class="card-title">Translated examples of users calling something false in right-wing groups.</h4>
+	            <img src="right_wingers.png" width="100%"/>
+	        </div>
+	    </div>
+	</div>
+	<div class="bs-component" width="90%" style="margin-left: 3%; margin-right: 3%; margin-bottom: 1.5em;">
+    	<h2 style="margin-bottom: .7em;">Learning Approach & Results</h2>
+        <p>
+			This work focuses on two learners whose representations provide clear insights on the most predictive features: Decision Trees (where terms are ordered by their <em>information gains</em>) and Logistic Regressions (where terms are ordered by their <em>coefficients</em>). In this context, predictive features (mostly terms) should show good precision and, hopefully, recall. After all, for either right-wingers or left-wingers, precision for the target class means finding the terms that most consistently identify users claiming something is false, while recall means finding the terms that identify all times when users are exhibiting such a behavior. However, since the entire range of topics causing users to promote distrust could be large and heterogeneous, it may be reasonable to prioritize precision over recall. In this sense, F0.5-score should reflect the appropriate balance of precision and recall, and 10-fold cross-validation (CV) should be a good way of navigating the bias-variance tradeoff toward a stable model. Following these guidelines in Weka 3.8.2, Figure 3 shows learning performance for both learners in each partisan group. It is worth-noticing that Decision Trees perform best in this prediction task for both right-wingers and left-wingers as they exceed 70% precision in a setting where 50% would be the naive baseline (i.e., the data set is perfectly balanced and this is a binary classification task). On F0.5-score, Decision Trees achieve 75% for right-wingers and approach 70% for left-wingers. Nevertheless, it is fair to note that all four learners are at least partially successful when contrasted with the naive baseline, which suggests that the prediction task is correctly formulated.
+        </p>
+    </div>
+    <div width="100%" style="display:inline-block">
+	    <div class="card border-light mb-3" style="max-width: 60%; float:left; margin-left: 3%; margin-right: 3%;">
+	        <div class="card-header">Figure 3</div>
+	        <div class="card-body">
+	        	<h4 class="card-title">Logistic Regression and Decision Tree learners performing way above  the naive baseline in both groups.</h4>
+	            <img src="performance.png" width="100%"/>
+	        </div>
+	    </div>
+	</div>
+	<div class="bs-component" width="90%" style="margin-left: 3%; margin-right: 3%; margin-bottom: 1.5em;">
+    	<h2 style="margin-bottom: .7em;">Key Findings</h2>
+        <p>
+			Table 1 shows the top 10 most predictive features in each learning setting. Cells in bold represent features that make the cut in both learners considering the same data set (either right-wingers or left-wingers). Interestingly, from this angle, learners diverge more than they converge. This happens because of their different approaches in regard to how to represent (and learn) hypotheses that model the prediction task. However, the points of convergence can be strong indicators of terms that trigger the target behavior. Among right-wingers, “URNAS” (as in voting booths) and “COMUNICAÇÃO” (as in communication groups) appear to be highly predictive of people calling something false. Several other terms related to these two subjects (“ELEITORAIS” referring to “URNAS” <em>vs.</em> “ENTREVISTA”, “ARTISTA”, “FOLHA”, “IMPRENSA” and “MÍDIA” referring to “COMUNICAÇÃO”) provide additional evidence supporting this claim. Among left-wingers, “NOTAS” is a false positive since it refers to a spam message offering fake bills. Taking it off the table, “TSE” (as in Brazil’s Superior Electoral Court) and “WhatsApp” appear to be highly predictive of people calling something false. Indeed, they do relate to the same subject: while the Superior Electoral Court is the institution supposed to watch over the election and enforce its rules, WhatsApp has emerged as a powerful and opaque platform strongly appealing to the far-right. Other terms related to the subject (e.g., “CAIXA” and “FOLHA”, referring to allegations of illegal campaign financing involving WhatsApp reported by the newspaper) can corroborate this interpretation.
+        </p>
+    </div>
+    <div width="100%" style="display:inline-block">
+	    <div class="card border-light mb-3" style="max-width: 80%; float:left; margin-left: 3%; margin-right: 3%;">
+	        <div class="card-header">Table 1</div>
+	        <div class="card-body">
+	        	<h4 class="card-title">Top 10 most predictive features in each learning setting from Figure 3.</h4>
+	            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">LogReg - LeftWing</th>
+                    <th scope="col">DecTree - LeftWing</th>
+                    <th scope="col">LogReg - RightWing</th>
+                    <th scope="col">DecTree - RightWing</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">#1</th>
+                    <td><strong>NOTAS_t0 (bills)</strong></td>
+                    <td><strong>NOTAS_t0 (bills)</strong></td>
+                    <td>ARTISTA_t-1 (artist)</td>
+                    <td>ESPALHAR_t0 (spread)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#2</th>
+                    <td><strong>TSE_t-1 (Superior Electoral Court)</strong></td>
+                    <td><strong>TSE_t0 (Superior Electoral Court)</strong></td>
+                    <td>ARTISTA_t-2 (artist)</td>
+                    <td>LEGISLAÇÃO_t0 (legislation)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#3</th>
+                    <td>EMPRESAS_t-2 (companies)</td>
+                    <td><strong>TSE_t1 (Superior Electoral Court)</strong></td>
+                    <td><strong>COMUNICAÇÃO_t0 (communication groups)</strong></td>
+                    <td>ELEITORAIS_t0 (electoral)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#4</th>
+                    <td><strong>WHATSAPP_t0</strong></td>
+                    <td>VERDADE_t0 (truth)</td>
+                    <td>KIT_t0 (“gay kit” factoid)</td>
+                    <td>mentiramparamimsobreojair.com_t0 (they-lied-to-me-about-Jair</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#5</th>
+                    <td>YOUTUBE_t-3</td>
+                    <td>CAIXA_t0 (illegal campaign contributions)</td>
+                    <td><strong>URNAS_t0 (voting booths)</strong></td>
+                    <td><strong>URNAS_t0 (voting booths)</strong></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#6</th>
+                    <td>ELENÃO_t-3 (colloquial reference to opposition)</td>
+                    <td>plantaobrasil.net_t0 (Brasil-on-call)</td>
+                    <td>PETRALHAS_t-1 (colloquial reference to opposition)</td>
+                    <td><strong>COMUNICAÇÃO_t0 (communication groups)</strong></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#7</th>
+                    <td>ELENÃO_t-1 (colloquial reference to opposition)</td>
+                    <td>NOTÍCIAS_t0 (news)</td>
+                    <td>FOLHA_t0 (mainstream newspaper)</td>
+                    <td>VERMELHO_t0 (colloquial reference to opposition)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#8</th>
+                    <td>MÍDIA_t-1 (media)</td>
+                    <td>chat.whatsapp.com_t0</td>
+                    <td>IMPRENSA_t0 (press)</td>
+                    <td>LENGTH_t0</td>
+                  </tr>
+                  <tr>
+                  	<th scope="row">#9</th>
+                    <td><strong>TSE_t0 (Superior Electoral Court)</strong></td>
+                    <td><strong>WHATSAPP_t0</strong></td>
+                    <td>MÍDIA_t0 (media)</td>
+                    <td>ENTREVISTA_t0 (interview)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#10</th>
+                    <td>FOLHA_t-3 (mainstream newspaper)</td>
+                    <td>TSE_t2 (Superior Electoral Court)</td>
+                    <td>COMUNISMO_t0 (communism)</td>
+                    <td>HADDAD_t-2 (Fernando Haddad)</td>
+                  </tr>
+                </tbody>
+              </table>
+	        </div>
+	    </div>
+	</div>
+</body>
+</html>
